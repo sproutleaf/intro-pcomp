@@ -89,9 +89,9 @@ void blinkLights() {
         if (i == 0 || i == 13) {
           drawPumpkin();          
         } else {
-          drawPumpkin();
-          // displayResult(i);
+          displayResult(i);
         }
+
         buttonState = digitalRead(BUTTON_PIN);
         while (buttonState == LOW) {
           buttonState = digitalRead(BUTTON_PIN);
@@ -109,16 +109,18 @@ void blinkLights() {
       }
     } else {
       unsigned long buttonCurrentTime = millis();
+      // To prevent premature button slowdown into the next round.
       if (buttonCurrentTime - lastExitTime > delayMs) {
         // We only want to read the button state when slow down has not been triggered.
         buttonState = digitalRead(BUTTON_PIN);
         // Once a button press is detected, we want to start the process of slowing down
-        // the light movement. For this button, LOW = not pressed; HIGH = pressed.
+        // the light movement.
         if (buttonState == HIGH) {
           slowDownActivated = true;
         }
       }
     }
+    // There's definitely a better way of doing this...
     i++;
     if (i == 24) {
       i = 0;
